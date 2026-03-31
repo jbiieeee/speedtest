@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friendly Speed Test with Insights</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- LEFT COLUMN: Speed Test Dashboard -->
+        <div class="dashboard">
+            <div class="client-info-grid">
+                <div class="info-item">
+                    <span class="info-icon">🏢</span>
+                    <div class="info-text">
+                        <small>Provider</small>
+                        <strong id="client-isp">Loading...</strong>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">📍</span>
+                    <div class="info-text">
+                        <small>Location</small>
+                        <strong id="client-location">Loading...</strong>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">💻</span>
+                    <div class="info-text">
+                        <small>Device</small>
+                        <strong id="client-device">Detecting...</strong>
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="title">Network Speed Test</h1>
+            
+            <div class="gauge-wrapper">
+                <svg class="gauge" viewBox="0 0 160 160">
+                    <circle class="gauge-track" cx="80" cy="80" r="70"></circle>
+                    <circle class="gauge-progress" id="gauge-fill" cx="80" cy="80" r="70"></circle>
+                </svg>
+                <div class="gauge-center">
+                    <div class="current-phase" id="phase-label">Ready</div>
+                    <div class="current-speed" id="live-speed">0.00</div>
+                    <div class="speed-unit">Mbps</div>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <span class="metric-label">Ping</span>
+                    <span class="metric-value" id="ping-val">-- <small>ms</small></span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-label">Download</span>
+                    <span class="metric-value" id="dl-val">-- <small>Mbps</small></span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-label">Upload</span>
+                    <span class="metric-value" id="ul-val">-- <small>Mbps</small></span>
+                </div>
+            </div>
+
+            <button id="start-btn" class="primary-btn">Start Speed Test</button>
+        </div>
+
+        <!-- RIGHT COLUMN: Network Insights -->
+        <div class="insights-panel">
+            <h2>Network Health</h2>
+            
+            <div class="overall-status">
+                <div class="status-indicator" id="overall-dot"></div>
+                <strong id="overall-text">Awaiting Test Results...</strong>
+            </div>
+
+            <div class="insight-cards">
+                <div class="insight-card bg-default" id="card-ping">
+                    <h3>🎮 Gaming & Latency</h3>
+                    <p id="desc-ping">Run a test to see how your connection handles real-time online games.</p>
+                </div>
+                
+                <div class="insight-card bg-default" id="card-dl">
+                    <h3>📺 Video Streaming</h3>
+                    <p id="desc-dl">Run a test to see if you can stream 4K or HD video without buffering.</p>
+                </div>
+                
+                <div class="insight-card bg-default" id="card-ul">
+                    <h3>📹 Video Calls & Uploads</h3>
+                    <p id="desc-ul">Run a test to evaluate your camera quality on Zoom/Teams and file sharing.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden pop-up for quick summary -->
+    <div class="modal-overlay" id="result-modal">
+        <div class="modal-content">
+            <h2>🎉 Test Complete!</h2>
+            <div class="final-results">
+                <div class="final-stat">
+                    <span>Ping</span>
+                    <strong id="final-ping">0 ms</strong>
+                </div>
+                <div class="final-stat download-color">
+                    <span>Download</span>
+                    <strong id="final-dl">0.00 Mbps</strong>
+                </div>
+                <div class="final-stat upload-color">
+                    <span>Upload</span>
+                    <strong id="final-ul">0.00 Mbps</strong>
+                </div>
+            </div>
+            <button id="close-modal-btn" class="primary-btn">View Detailed Insights</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

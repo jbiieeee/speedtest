@@ -5,13 +5,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function fetchClientData() {
     try {
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();
-        document.getElementById('client-isp').innerText = data.org || "Unknown ISP";
-        document.getElementById('client-location').innerText = `${data.city}, ${data.country_code}`;
+        // First attempt: ipapi.co
+        let response = await fetch('https://ipapi.co/json/');
+        let data;
+        
+        // If the first API fails (e.g., rate limit), try the backup API
+        if (!response.ok) {
+            response = await fetch('https://ipwho.is/');
+            data = await response.json();
+            
+            // Map the backup API data
+            document.getElementById('client-isp').innerText = data.connection.isp || "Unknown ISP";
+            document.getElementById('client-location').innerText = `${data.city}, ${data.country_code}`;
+        } else {
+            // Map the primary API data
+            data = await response.json();
+            document.getElementById('client-isp').innerText = data.org || "Unknown ISP";
+            document.getElementById('client-location').innerText = `${data.city}, ${data.country_code}`;
+        }
+        
     } catch (error) {
-        document.getElementById('client-isp').innerText = "Unavailable";
-        document.getElementById('client-location').innerText = "Unavailable";
+        // If an ad-blocker completely kills both requests, fail gracefully
+        document.getElementById('client-isp').innerText = "Hidden (Ad-Blocker)";
+        document.getElementById('client-location').innerText = "Hidden";
+        console.error("IP APIs were blocked by the browser or an extension.");
     }
 }
 

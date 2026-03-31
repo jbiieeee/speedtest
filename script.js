@@ -5,30 +5,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function fetchClientData() {
     try {
-        // First attempt: ipapi.co
-        let response = await fetch('https://ipapi.co/json/');
-        let data;
+        // Attempt 1: DB-IP (Very reliable for GitHub Pages, allows CORS)
+        const response = await fetch('https://api.db-ip.com/v2/free/self');
+        if (!response.ok) throw new Error("Primary API blocked");
+        const data = await response.json();
         
-        // If the first API fails (e.g., rate limit), try the backup API
-        if (!response.ok) {
-            response = await fetch('https://ipwho.is/');
-            data = await response.json();
-            
-            // Map the backup API data
-            document.getElementById('client-isp').innerText = data.connection.isp || "Unknown ISP";
-            document.getElementById('client-location').innerText = `${data.city}, ${data.country_code}`;
-        } else {
-            // Map the primary API data
-            data = await response.json();
-            document.getElementById('client-isp').innerText = data.org || "Unknown ISP";
-            document.getElementById('client-location').innerText = `${data.city}, ${data.country_code}`;
-        }
+        document.getElementById('client-isp').innerText = data.isp || "Unknown ISP";
+        document.getElementById('client-location').innerText = `${data.city}, ${data.countryCode}`;
         
     } catch (error) {
-        // If an ad-blocker completely kills both requests, fail gracefully
-        document.getElementById('client-isp').innerText = "Hidden (Ad-Blocker)";
-        document.getElementById('client-location').innerText = "Hidden";
-        console.error("IP APIs were blocked by the browser or an extension.");
+        try {
+            // Attempt 2: IPInfo (Excellent fallback)
+            const res2 = await fetch('https://ipinfo.io/json');
+            if (!res2.ok) throw new Error("Fallback API blocked");
+            const data2 = await res2.json();
+            
+            // IPInfo returns ISP as "AS12345 Provider Name", so we clean it up
+            let cleanISP = data2.org ? data2.org.replace(/^AS\d+\s/, '') : "Unknown ISP";
+            
+            document.getElementById('client-isp').innerText = cleanISP;
+            document.getElementById('client-location').innerText = `${data2.city}, ${data2.country}`;
+            
+        } catch (err2) {
+            // If both fail, it is 100% a browser privacy shield or ad-blocker
+            document.getElementById('client-isp').innerText = "Private Connection";
+            document.getElementById('client-location').innerText = "Hidden by Browser";
+            console.error("Network info hidden by browser privacy settings.");
+        }
     }
 }
 

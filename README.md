@@ -1,5 +1,7 @@
 # 🚀 Network Speed Test & Health Dashboard
 
+https://jbiieeee.github.io/speedtest/
+
 A beautiful, client-side only internet speed test application built with HTML, CSS, and Vanilla JavaScript. 
 
 Instead of just showing raw numbers, this dashboard translates your speed test results into actionable, real-world insights, telling you exactly how your connection will handle gaming, 4K streaming, and video calls.

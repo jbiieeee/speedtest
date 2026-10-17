@@ -1,122 +1,128 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Friendly Speed Test with Insights</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="Check your internet speed and understand how your connection supports gaming, streaming, and video calls.">
+  <title>Network speed test</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <main class="app-shell">
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Pulse home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h4l2.2-6 4.1 12 2.2-6H21"/></svg></span>
+        <span>pulse<span class="brand-period">.</span></span>
+      </a>
+      <div class="header-note"><span class="live-dot" aria-hidden="true"></span> Your connection, at a glance</div>
+    </header>
+
+    <section class="page-heading" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">NETWORK DIAGNOSTICS</p>
+        <h1 id="page-title">Internet speed test</h1>
+        <p class="page-subtitle">See how your connection performs in everyday use.</p>
+      </div>
+      <div class="test-method" title="Download uses a real file transfer. Ping and upload are estimates in this browser-only demo.">
+        <svg aria-hidden="true" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.3"/><path d="M10 9v4m0-7h.01"/></svg>
+        <span>Download measured · ping &amp; upload estimated</span>
+      </div>
+    </section>
 
     <div class="app-container">
-        <!-- LEFT COLUMN: Speed Test Dashboard -->
-        <div class="dashboard">
-            <div class="client-info-grid">
-                <div class="info-item">
-                    <span class="info-icon">🏢</span>
-                    <div class="info-text">
-                        <small>Provider</small>
-                        <strong id="client-isp">Loading...</strong>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <span class="info-icon">📍</span>
-                    <div class="info-text">
-                        <small>Location</small>
-                        <strong id="client-location">Loading...</strong>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <span class="info-icon">💻</span>
-                    <div class="info-text">
-                        <small>Device</small>
-                        <strong id="client-device">Detecting...</strong>
-                    </div>
-                </div>
-            </div>
-
-            <h1 class="title">Network Speed Test</h1>
-            
-            <div class="gauge-wrapper">
-                <svg class="gauge" viewBox="0 0 160 160">
-                    <circle class="gauge-track" cx="80" cy="80" r="70"></circle>
-                    <circle class="gauge-progress" id="gauge-fill" cx="80" cy="80" r="70"></circle>
-                </svg>
-                <div class="gauge-center">
-                    <div class="current-phase" id="phase-label">Ready</div>
-                    <div class="current-speed" id="live-speed">0.00</div>
-                    <div class="speed-unit">Mbps</div>
-                </div>
-            </div>
-
-            <div class="metrics-grid">
-                <div class="metric-box">
-                    <span class="metric-label">Ping</span>
-                    <span class="metric-value" id="ping-val">-- <small>ms</small></span>
-                </div>
-                <div class="metric-box">
-                    <span class="metric-label">Download</span>
-                    <span class="metric-value" id="dl-val">-- <small>Mbps</small></span>
-                </div>
-                <div class="metric-box">
-                    <span class="metric-label">Upload</span>
-                    <span class="metric-value" id="ul-val">-- <small>Mbps</small></span>
-                </div>
-            </div>
-
-            <button id="start-btn" class="primary-btn">Start Speed Test</button>
+      <section class="dashboard panel" aria-labelledby="test-heading">
+        <div class="client-info-grid" aria-label="Connection details">
+          <div class="info-item">
+            <span class="info-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M15 9h.01M9 13h.01M15 13h.01M10 21v-4h4v4"/></svg></span>
+            <div class="info-text"><small>Provider</small><strong id="client-isp" title="Loading provider">Loading…</strong></div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+            <div class="info-text"><small>Location</small><strong id="client-location" title="Loading location">Loading…</strong></div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4"/></svg></span>
+            <div class="info-text"><small>Device</small><strong id="client-device">Detecting…</strong></div>
+          </div>
         </div>
 
-        <!-- RIGHT COLUMN: Network Insights -->
-        <div class="insights-panel">
-            <h2>Network Health</h2>
-            
-            <div class="overall-status">
-                <div class="status-indicator" id="overall-dot"></div>
-                <strong id="overall-text">Awaiting Test Results...</strong>
-            </div>
+        <div class="test-content">
+          <div class="section-heading">
+            <div><p class="eyebrow">LIVE TEST</p><h2 id="test-heading">Check your connection</h2></div>
+            <span class="ready-badge" id="test-state"><span class="state-dot"></span> Ready</span>
+          </div>
 
-            <div class="insight-cards">
-                <div class="insight-card bg-default" id="card-ping">
-                    <h3>🎮 Gaming & Latency</h3>
-                    <p id="desc-ping">Run a test to see how your connection handles real-time online games.</p>
-                </div>
-                
-                <div class="insight-card bg-default" id="card-dl">
-                    <h3>📺 Video Streaming</h3>
-                    <p id="desc-dl">Run a test to see if you can stream 4K or HD video without buffering.</p>
-                </div>
-                
-                <div class="insight-card bg-default" id="card-ul">
-                    <h3>📹 Video Calls & Uploads</h3>
-                    <p id="desc-ul">Run a test to evaluate your camera quality on Zoom/Teams and file sharing.</p>
-                </div>
+          <div class="gauge-wrapper" aria-label="Live speed test meter">
+            <svg class="gauge" viewBox="0 0 200 200" role="img" aria-label="Speed meter">
+              <circle class="gauge-track" cx="100" cy="100" r="84"></circle>
+              <circle class="gauge-progress" id="gauge-fill" cx="100" cy="100" r="84"></circle>
+            </svg>
+            <div class="gauge-center" aria-live="polite" aria-atomic="true">
+              <div class="current-phase" id="phase-label">Ready</div>
+              <div class="current-speed" id="live-speed">0.00</div>
+              <div class="speed-unit">Mbps</div>
             </div>
+          </div>
+
+          <div class="metrics-grid" aria-label="Test results">
+            <div class="metric-box metric-ping"><span class="metric-label">Ping <span class="metric-hint">estimated</span></span><span class="metric-value" id="ping-val">-- <small>ms</small></span></div>
+            <div class="metric-box metric-download"><span class="metric-label">Download</span><span class="metric-value" id="dl-val">-- <small>Mbps</small></span></div>
+            <div class="metric-box metric-upload"><span class="metric-label">Upload <span class="metric-hint">estimated</span></span><span class="metric-value" id="ul-val">-- <small>Mbps</small></span></div>
+          </div>
+
+          <button id="start-btn" class="primary-btn" type="button">
+            <span>Start speed test</span><svg aria-hidden="true" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6"/></svg>
+          </button>
+          <p class="test-footnote">For the most accurate result, pause downloads on other devices.</p>
         </div>
+      </section>
+
+      <aside class="insights-panel panel" aria-labelledby="insights-heading">
+        <div class="section-heading insights-heading">
+          <div><p class="eyebrow">WHAT IT MEANS</p><h2 id="insights-heading">Network health</h2></div>
+          <span class="insight-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 18 0M6 12a6 6 0 0 1 12 0m-9 0a3 3 0 0 1 6 0m-3 6h.01"/></svg></span>
+        </div>
+        <div class="overall-status" role="status" aria-live="polite">
+          <div class="status-indicator" id="overall-dot"></div>
+          <div><span class="status-label">Overall assessment</span><strong id="overall-text">Awaiting test results</strong></div>
+        </div>
+
+        <div class="insight-cards">
+          <article class="insight-card bg-default" id="card-ping">
+            <span class="insight-symbol gaming" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9h12a4 4 0 0 1 3.7 5.5l-1 2.5a2 2 0 0 1-3.2.7L15 16H9l-2.5 1.7a2 2 0 0 1-3.2-.7l-1-2.5A4 4 0 0 1 6 9Z"/><path d="M7 11v4m-2-2h4m7-.5h.01M18 14h.01"/></svg></span>
+            <div><h3>Gaming &amp; latency</h3><p id="desc-ping">Run a test to see how your connection handles real-time online games.</p></div>
+          </article>
+          <article class="insight-card bg-default" id="card-dl">
+            <span class="insight-symbol streaming" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="m10 8 5 2.5-5 2.5zM8 21h8m-4-4v4"/></svg></span>
+            <div><h3>Video streaming</h3><p id="desc-dl">Run a test to see if you can stream 4K or HD video without buffering.</p></div>
+          </article>
+          <article class="insight-card bg-default" id="card-ul">
+            <span class="insight-symbol calls" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="m17 10 4-2v8l-4-2m-9-6 3 2-3 2z"/></svg></span>
+            <div><h3>Video calls &amp; uploads</h3><p id="desc-ul">Run a test to evaluate call quality and file sharing.</p></div>
+          </article>
+        </div>
+        <div class="privacy-note"><svg aria-hidden="true" viewBox="0 0 20 20"><rect x="4" y="8" width="12" height="9" rx="2"/><path d="M7 8V6a3 3 0 0 1 6 0v2m-3 4v2"/></svg><span>Your results stay in this browser.</span></div>
+      </aside>
     </div>
+    <footer class="page-footer"><span>Pulse Network Diagnostics</span><span>Results may vary with network conditions.</span></footer>
+  </main>
 
-    <!-- Hidden pop-up for quick summary -->
-    <div class="modal-overlay" id="result-modal">
-        <div class="modal-content">
-            <h2>🎉 Test Complete!</h2>
-            <div class="final-results">
-                <div class="final-stat">
-                    <span>Ping</span>
-                    <strong id="final-ping">0 ms</strong>
-                </div>
-                <div class="final-stat download-color">
-                    <span>Download</span>
-                    <strong id="final-dl">0.00 Mbps</strong>
-                </div>
-                <div class="final-stat upload-color">
-                    <span>Upload</span>
-                    <strong id="final-ul">0.00 Mbps</strong>
-                </div>
-            </div>
-            <button id="close-modal-btn" class="primary-btn">View Detailed Insights</button>
-        </div>
-    </div>
+  <div class="modal-overlay" id="result-modal" aria-hidden="true">
+    <section class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" tabindex="-1">
+      <div class="modal-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 12 4 4 8-8"/></svg></div>
+      <p class="eyebrow">TEST FINISHED</p>
+      <h2 id="modal-title">Your results are ready</h2>
+      <p id="modal-description" class="modal-description">Here’s a quick summary of your connection.</p>
+      <div class="final-results">
+        <div class="final-stat"><span>Ping <small>estimated</small></span><strong id="final-ping">0 ms</strong></div>
+        <div class="final-stat download-color"><span>Download</span><strong id="final-dl">0.00 Mbps</strong></div>
+        <div class="final-stat upload-color"><span>Upload <small>estimated</small></span><strong id="final-ul">0.00 Mbps</strong></div>
+      </div>
+      <button id="close-modal-btn" class="primary-btn" type="button"><span>View network insights</span><svg aria-hidden="true" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6"/></svg></button>
+    </section>
+  </div>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

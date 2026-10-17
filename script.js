@@ -53,8 +53,11 @@ const gaugeFill = document.getElementById('gauge-fill');
 const pingVal = document.getElementById('ping-val');
 const dlVal = document.getElementById('dl-val');
 const ulVal = document.getElementById('ul-val');
+const testState = document.getElementById('test-state');
+const resultModal = document.getElementById('result-modal');
+const modalContent = resultModal.querySelector('.modal-content');
 
-const GAUGE_CIRCUMFERENCE = 439.8; 
+const GAUGE_CIRCUMFERENCE = 527.8;
 const TEST_FILE = "https://upload.wikimedia.org/wikipedia/commons/3/3f/Fronalpstock_big.jpg"; 
 
 let finalDownloadSpeed = 0;
@@ -64,14 +67,34 @@ let finalPingMs = 0;
 startBtn.addEventListener('click', runSpeedTest);
 
 document.getElementById('close-modal-btn').addEventListener('click', () => {
-    document.getElementById('result-modal').classList.remove('active');
-    startBtn.disabled = false;
-    startBtn.innerText = "Test Again";
+    closeResults();
 });
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && resultModal.classList.contains('active')) closeResults();
+    if (event.key === 'Tab' && resultModal.classList.contains('active')) {
+        event.preventDefault();
+        document.getElementById('close-modal-btn').focus();
+    }
+});
+
+function closeResults() {
+    resultModal.classList.remove('active');
+    resultModal.setAttribute('aria-hidden', 'true');
+    startBtn.disabled = false;
+    startBtn.querySelector('span').innerText = "Run test again";
+    startBtn.focus();
+}
+
+function setTestState(label, state) {
+    testState.className = `ready-badge${state ? ` is-${state}` : ''}`;
+    testState.innerHTML = `<span class="state-dot" aria-hidden="true"></span> ${label}`;
+}
 
 async function runSpeedTest() {
     startBtn.disabled = true;
-    startBtn.innerText = "Testing...";
+    startBtn.querySelector('span').innerText = "Testing your connection…";
+    setTestState('In progress', 'running');
     resetInsightsPanel();
     
     await runPingTest();
@@ -83,6 +106,7 @@ async function runSpeedTest() {
 
 function runPingTest() {
     return new Promise(resolve => {
+        setTestState('Measuring ping', 'running');
         phaseLabel.innerText = "Ping";
         phaseLabel.style.color = "var(--brand-ping)";
         setGauge(5, 'var(--brand-ping)'); 
@@ -98,6 +122,7 @@ function runPingTest() {
 
 function runDownloadTest() {
     return new Promise(resolve => {
+        setTestState('Measuring download', 'running');
         phaseLabel.innerText = "Download";
         phaseLabel.style.color = "var(--brand-dl)";
         setGaugeColor('var(--brand-dl)');
@@ -132,6 +157,7 @@ function runDownloadTest() {
 
 function runUploadTest() {
     return new Promise(resolve => {
+        setTestState('Estimating upload', 'running');
         phaseLabel.innerText = "Upload";
         phaseLabel.style.color = "var(--brand-ul)";
         setGaugeColor('var(--brand-ul)');
@@ -254,8 +280,11 @@ function analyzeAndShowResults() {
     document.getElementById('final-ul').innerText = `${finalUploadSpeed.toFixed(2)} Mbps`;
     
     setTimeout(() => {
-        document.getElementById('result-modal').classList.add('active');
+        resultModal.classList.add('active');
+        resultModal.setAttribute('aria-hidden', 'false');
+        modalContent.focus();
     }, 400);
+    setTestState('Complete', 'complete');
 }
 
 function setCardState(card, descEl, colorClass, text) {
